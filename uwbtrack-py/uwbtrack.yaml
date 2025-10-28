@@ -1,0 +1,76 @@
+# Leave port as null and pass it on the CLI:  --port /dev/ttyACM7
+port: null
+baud: 115200
+
+# Anchors: positions (x,y,z) in meters
+anchors: "1:0,0,1.675;2:7.48,0,1.675;3:3.50,3.94,2.665;4:6.39,3.94,2.665;5:0.53,3.94,2.665;6:3.74,-0.225,1.675" # D.2.10 Lab
+
+# Core behavior
+min_anchors: 3
+no_plot: false
+bias_file: "biases.json"
+no_calib: true # skip bias calibration
+print_qual: true
+debug_geom: false
+
+# 2D floor solve
+solve_2d: true
+floor_z: 0.175 # tag height on a JetRacer in meters
+
+# Origin shift:
+# 1) Set origin_shift: false. Run and place the tag at your desired new origin; note printed XY.
+# 2) Put those into origin_shift_x / origin_shift_y below.
+# 3) Set origin_shift: true. Now that point becomes (0,0) everywhere.
+origin_shift: true
+origin_shift_x: 3.920
+origin_shift_y: 1.554
+
+# Robustness / gating
+max_range_m: 50.0
+certainty_dist: 0.2
+outlier_threshold: 6.0 #3.0
+min_weight: 0.0 #0.05
+stats_every: 20
+strong_weight: 0.20
+innovation_max: 1.5
+weak_avgw: 0.30
+
+# Kalman tuning (std-dev style)
+kf_process: 0.05
+kf_meas: 0.60
+
+# Combined LLM settings
+llm_hybrid_tuning_enabled: true  # Single toggle for LLM-based tuning
+llm_window_s: 3.0                # Fast loop window
+slow_loop_s: 30.0                # Slow loop interval
+
+# Plotting settings
+show_raw_position: false
+
+# CSV logs
+logging_enabled: False
+log_frames_csv: "runs/frames.csv"
+log_windows_csv: "runs/windows.csv"
+
+# LLM runtime (Ollama / local)
+llama_url: "http://localhost:11434"
+llama_model: "llama3.1:8b-instruct-q4_K_M"
+llama_timeout: 1.5
+llama_max_tokens: 80
+# Force CPU vs GPU:
+#   0 => CPU-only, omit or set >0 => allow GPU auto-offload
+llama_num_gpu:
+llm_log_csv: "runs/llm_log.csv"
+
+# Mocap / WebSocket ground truth
+mocap_enabled: true
+websocket_ip: "ws://10.254.17.225"
+websocket_port: 8765
+mocap_object: "Goal"
+mocap_id: 2
+
+# UWB measurements WebSocket (used when choosing port: uwb_ws)
+uwb_ws_url: "ws://10.254.17.4:8766/"
+
+# Where to store logs
+runs_dir: "runs"
